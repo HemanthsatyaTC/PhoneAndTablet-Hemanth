@@ -1,13 +1,14 @@
 package com.example.app_tablet.data.remote.simpson
 
 import com.example.app_tablet.data.model.simpson.RelatedTopicModel
+import com.example.app_tablet.data.model.simpson.SimpsonDataModel
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface SimpsonApiInterface {
-    @GET(SimpsonDetails.END_POINTS)
+    @GET(SimpsonDetails.BASE_URL)
     suspend fun getSimpson(
-        @Query("q") query: String = "simpsons+characters",
+        @Query("q", encoded = true) query: String = "simpsons+characters",
         @Query("format") format: String = "json"
-    ): RelatedTopicModel
+    ): SimpsonDataModel
 }

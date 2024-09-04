@@ -6,30 +6,38 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app_tablet.data.model.simpson.RelatedTopicModel
+import com.example.app_tablet.data.model.simpson.SimpsonDataModel
 import com.example.app_tablet.data.model.wire.RelatedTopicModelWire
+import com.example.app_tablet.data.model.wire.WireDataModel
 import com.example.app_tablet.data.remote.simpson.SimpsonDetails
 import com.example.app_tablet.data.remote.wire.WireDetails
+import com.example.app_tablet.data.repository.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel  @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 
-    private val _detailsleft = MutableLiveData<RelatedTopicModel>()
-    val detailsleft : LiveData<RelatedTopicModel> = _detailsleft
+    private val _detailsleft = MutableLiveData<SimpsonDataModel>()
+    val detailsleft : LiveData<SimpsonDataModel> = _detailsleft
 
     fun getSimpson(query: String, format: String) {
         viewModelScope.launch {
             try {
-                val result = SimpsonDetails.retrofitDetails.getSimpson("simpsons+characters", "json")
+                val result = repository.getSimpson("simpsons+characters", "json")
 
                 // Log the result
                 Log.d("HomeViewModel", "Fetched Data: $result")
 
-                _detailsleft.postValue(result)
+                _detailsleft.postValue(result?:SimpsonDataModel())
             } catch (e: Exception) {
                 // Log any errors
                 Log.e("HomeViewModel", "Error fetching data: ${e.message}")
@@ -37,18 +45,18 @@ class HomeViewModel : ViewModel() {
 
         }
     }
-    private val _detailsRight = MutableLiveData<RelatedTopicModelWire>()
-    val detailsRight : LiveData<RelatedTopicModelWire> = _detailsRight
+    private val _detailsRight = MutableLiveData<WireDataModel>()
+    val detailsRight : LiveData<WireDataModel> = _detailsRight
 
     fun getWire(query: String ="the+wire+characters", format: String ="json") {
         viewModelScope.launch {
             try {
-                val result = WireDetails.retrofitDetails.getWire("simpsons+characters", "json")
+                val result = repository.getWire("the+wire+characters", "json")
 
                 // Log the result
                 Log.d("DashBoardViewModel", "Fetched Data: $result")
 
-                _detailsRight.postValue(result)
+                _detailsRight.postValue(result?:WireDataModel())
             } catch (e: Exception) {
                 // Log any errors
                 Log.e("DashBoardViewModel", "Error fetching data: ${e.message}")

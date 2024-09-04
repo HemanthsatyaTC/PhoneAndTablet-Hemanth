@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_tablet.databinding.FragmentHomeBinding
 import com.example.app_tablet.ui.adapter.SimpsonAdapter
 import com.example.app_tablet.ui.adapter.WireAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -42,7 +44,7 @@ class HomeFragment : Fragment() {
             binding.apply {
                 simpsonRecycle.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = SimpsonAdapter(it)
+                    adapter = SimpsonAdapter(it.relatedTopics)
 
                 }
             }
@@ -56,7 +58,7 @@ class HomeFragment : Fragment() {
             binding.apply {
                 wireRecycle.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = WireAdapter(it)
+                    adapter = WireAdapter(it.relatedTopics)
 
                 }
             }

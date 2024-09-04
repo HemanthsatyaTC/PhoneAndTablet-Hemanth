@@ -9,11 +9,14 @@ import com.example.phoneandtablet.data.model.simpson.RelatedTopicModel
 import com.example.phoneandtablet.data.model.simpson.SimpsonDataModel
 import com.example.phoneandtablet.data.remote.simpson.SimpsonDetails
 import com.example.phoneandtablet.data.repository.Repository
+import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val repository: Repository
+): ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
@@ -26,7 +29,7 @@ class HomeViewModel : ViewModel() {
     fun getSimpson(query: String, format: String) {
         viewModelScope.launch {
             try {
-                val result = SimpsonDetails.retrofitDetails.getSimpson("simpsons+characters", "json")
+                val result = repository.getSimpson("simpsons+characters", "json")
 
                 // Log the result
                 Log.d("HomeViewModel", "Fetched Data: $result")

@@ -11,7 +11,7 @@ object WireDetails {
 //    https://api.duckduckgo.com/?q=the+wire+characters&format=json
 
     const val BASE_URL= "https://api.duckduckgo.com/"
-    const val END_POINTS = "?"
+    const val END_POINTS = ""
 
     val retrofitDetails = Retrofit.Builder()
         .baseUrl(BASE_URL)

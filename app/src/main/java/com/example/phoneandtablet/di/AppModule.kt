@@ -73,6 +73,14 @@ class AppModule {
     }
 
     @Provides
+    fun WireApiInterface(
+        retrofit: Retrofit
+    ): WireApiInterface {
+        return retrofit.create(WireApiInterface::class.java)
+
+    }
+
+    @Provides
     fun getRepository(
         apiSimpson: SimpsonApiInterface,
         apiWire: WireApiInterface
